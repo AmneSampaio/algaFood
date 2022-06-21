@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.domain.service;
 
 import com.algaworks.ecommerce.domain.model.Restaurant;
 import com.algaworks.ecommerce.domain.repository.RestaurantRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,14 @@ public class RestaurantSignupService {
 
     public Restaurant toSave(Restaurant restaurant) {
         return restaurantRepository.toAdd(restaurant);
+    }
+
+    public Restaurant toChange(Long id, Restaurant restaurant) {
+
+        Restaurant restaurantAlreadyHere = restaurantRepository.byId(id);
+
+        BeanUtils.copyProperties(restaurant, restaurantAlreadyHere,"id","name");
+
+        return restaurantRepository.toAdd(restaurantAlreadyHere);
     }
 }
