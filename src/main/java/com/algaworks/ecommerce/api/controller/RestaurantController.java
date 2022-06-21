@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -14,11 +15,11 @@ import java.util.List;
 public class RestaurantController {
 
     @Autowired
-    private RestaurantSignupService restaurantSignupService ;
+    private RestaurantSignupService restaurantSignupService;
 
     @GetMapping
     public List<Restaurant> toList() {
-        return restaurantSignupService.all() ;
+        return restaurantSignupService.all();
     }
 
     @GetMapping("/{id}")
@@ -26,13 +27,22 @@ public class RestaurantController {
         Restaurant restaurant = restaurantSignupService.byId(id);
 
         if (restaurant == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(restaurant);
     }
 
     @PostMapping
-    public ResponseEntity<Restaurant> toAdd(@RequestBody Restaurant restaurant) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(restaurantSignupService.toSave(restaurant));
+    public ResponseEntity<?> toAdd(@RequestBody Restaurant restaurant) {
+        Long kitchenId = restaurant.getKitchen().getId();
+        try {
+            restaurant = restaurantSignupService.toSave(restaurant);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
+        } catch (EntityNotFoundException e) {
+
+            return ResponseEntity.badRequest()
+                    .body(String.format("There is no such kitchen with this id: %d", kitchenId));
+        }
     }
 }
