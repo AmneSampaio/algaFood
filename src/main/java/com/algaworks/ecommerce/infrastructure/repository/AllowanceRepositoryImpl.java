@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.infrastructure.repository;
 
 import com.algaworks.ecommerce.domain.model.Allowance;
-import com.algaworks.ecommerce.domain.model.Kitchen;
 import com.algaworks.ecommerce.domain.repository.AllowanceRepository;
 import com.algaworks.ecommerce.domain.repository.KitchenRepository;
 import org.springframework.stereotype.Component;
