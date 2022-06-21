@@ -1,10 +1,8 @@
 package com.algaworks.ecommerce.api.controller;
 
-import com.algaworks.ecommerce.domain.model.Kitchen;
 import com.algaworks.ecommerce.domain.model.State;
 import com.algaworks.ecommerce.domain.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
