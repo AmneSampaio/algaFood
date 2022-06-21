@@ -27,7 +27,7 @@ public class RestaurantController {
         Restaurant restaurant = restaurantSignupService.byId(id);
 
         if (restaurant == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(restaurant);
     }
@@ -39,6 +39,24 @@ public class RestaurantController {
             restaurant = restaurantSignupService.toSave(restaurant);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
+        } catch (EntityNotFoundException e) {
+
+            return ResponseEntity.badRequest()
+                    .body(String.format("There is no such kitchen with this id: %d", kitchenId));
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> toChange(@PathVariable Long id, @RequestBody Restaurant restaurant) {
+        Long kitchenId = restaurant.getKitchen().getId();
+
+        try {
+            restaurant = restaurantSignupService.toChange(id,restaurant);
+
+            if (restaurant != null) {
+                return ResponseEntity.ok(restaurant);
+            }
+            return ResponseEntity.notFound().build();
         } catch (EntityNotFoundException e) {
 
             return ResponseEntity.badRequest()
