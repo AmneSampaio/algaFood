@@ -6,7 +6,6 @@ import com.algaworks.ecommerce.domain.repository.KitchenRepository;
 import com.algaworks.ecommerce.domain.service.KitchenSignupService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,7 @@ public class KitchenController {
 
     @GetMapping
     public List<Kitchen> toList() {
-        return kitchenRepository.all() ;
+        return kitchenSignupService.all() ;
     }
 
     @GetMapping("/{id}")
@@ -40,7 +39,6 @@ public class KitchenController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Kitchen> toAdd(@RequestBody Kitchen kitchen) {
         return ResponseEntity.status(HttpStatus.CREATED).body(kitchenSignupService.toSave(kitchen));
     }
