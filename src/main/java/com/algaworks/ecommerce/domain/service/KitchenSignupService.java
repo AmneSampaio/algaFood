@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class KitchenSignupService {
@@ -16,7 +17,9 @@ public class KitchenSignupService {
     @Autowired
     private KitchenRepository kitchenRepository;
 
-
+    public List<Kitchen> all() {
+        return kitchenRepository.all();
+    }
 
     public Kitchen toSave(Kitchen kitchen) {
         return kitchenRepository.toAdd(kitchen);
@@ -37,5 +40,6 @@ public class KitchenSignupService {
         }
 
     }
+
 
 }
