@@ -2,7 +2,9 @@ package com.algaworks.ecommerce.api.controller;
 
 import com.algaworks.ecommerce.domain.model.Restaurant;
 import com.algaworks.ecommerce.domain.service.RestaurantSignupService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,18 +48,19 @@ public class RestaurantController {
         }
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> toChange(@PathVariable Long id, @RequestBody Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
 
         try {
-            restaurant = restaurantSignupService.toChange(id,restaurant);
-
-            if (restaurant != null) {
+            Restaurant restaurantAlreadyHere = restaurantSignupService.byId(id);
+            if (restaurantAlreadyHere != null) {
+                BeanUtils.copyProperties(restaurant, restaurantAlreadyHere,"id");
+                restaurant = restaurantSignupService.toChange(restaurantAlreadyHere);
                 return ResponseEntity.ok(restaurant);
             }
             return ResponseEntity.notFound().build();
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException| DataIntegrityViolationException e) {
 
             return ResponseEntity.badRequest()
                     .body(String.format("There is no such kitchen with this id: %d", kitchenId));
