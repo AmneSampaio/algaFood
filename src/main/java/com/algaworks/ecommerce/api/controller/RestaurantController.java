@@ -53,10 +53,10 @@ public class RestaurantController {
         Long kitchenId = restaurant.getKitchen().getId();
 
         try {
-            Restaurant restaurantAlreadyHere = restaurantSignupService.byId(id);
-            if (restaurantAlreadyHere != null) {
-                BeanUtils.copyProperties(restaurant, restaurantAlreadyHere,"id");
-                restaurant = restaurantSignupService.toChange(restaurantAlreadyHere);
+            Restaurant restaurantDB = restaurantSignupService.byId(id);
+            if (restaurantDB != null) {
+                BeanUtils.copyProperties(restaurant, restaurantDB,"id");
+                restaurant = restaurantSignupService.toChange(restaurantDB);
                 return ResponseEntity.ok(restaurant);
             }
             return ResponseEntity.notFound().build();
