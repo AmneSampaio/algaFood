@@ -38,9 +38,7 @@ public class KitchenRepositoryImpl implements KitchenRepository {
     public void toDelete(Long id) {
         Kitchen kitchen = byId(id);
 
-        if (kitchen == null) {
-            throw new EmptyResultDataAccessException(1);
-        }
+        if (kitchen == null) throw new EmptyResultDataAccessException(1);
 
         manager.remove(kitchen);
     }
