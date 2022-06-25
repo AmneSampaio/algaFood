@@ -1,6 +1,8 @@
 package com.algaworks.ecommerce.api.controller;
 
+import com.algaworks.ecommerce.domain.exception.EntityInUseException;
 import com.algaworks.ecommerce.domain.model.Restaurant;
+import com.algaworks.ecommerce.domain.model.State;
 import com.algaworks.ecommerce.domain.service.RestaurantSignupService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,20 @@ public class RestaurantController {
 
             return ResponseEntity.badRequest()
                     .body(String.format("There is no such kitchen with this id: %d", kitchenId));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<State> toDelete(@PathVariable Long id) {
+        try {
+            restaurantSignupService.toDelete(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityInUseException e) {
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (EntityNotFoundException e) {
+
+            return ResponseEntity.notFound().build();
         }
     }
 }
