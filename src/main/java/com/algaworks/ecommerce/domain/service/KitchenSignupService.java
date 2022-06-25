@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class KitchenSignupService {
@@ -16,7 +17,9 @@ public class KitchenSignupService {
     @Autowired
     private KitchenRepository kitchenRepository;
 
-
+    public List<Kitchen> all() {
+        return kitchenRepository.all();
+    }
 
     public Kitchen toSave(Kitchen kitchen) {
         return kitchenRepository.toAdd(kitchen);
@@ -25,17 +28,16 @@ public class KitchenSignupService {
     public void toDelete(Long id) {
         try {
             kitchenRepository.toDelete(id);
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException| EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(String.format("Not found kitchen related to the id %d.", id));
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
                     String.format("Kitchen of id %d can't be removed, " +
                             "it has children or dependency with another " +
                             "entity.", id));
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException(String.format("Not found kitchen related to the id %d.", id));
         }
 
     }
+
 
 }

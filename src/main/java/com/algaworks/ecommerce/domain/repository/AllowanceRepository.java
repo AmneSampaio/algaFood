@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.domain.repository;
 
 import com.algaworks.ecommerce.domain.model.Allowance;
-import com.algaworks.ecommerce.domain.model.Kitchen;
 
 import java.util.List;
 

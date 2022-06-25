@@ -1,9 +1,8 @@
 package com.algaworks.ecommerce.infrastructure.repository;
 
 import com.algaworks.ecommerce.domain.model.City;
-import com.algaworks.ecommerce.domain.model.Kitchen;
 import com.algaworks.ecommerce.domain.repository.CityRepository;
-import com.algaworks.ecommerce.domain.repository.KitchenRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +34,13 @@ public class CityRepositoryImpl implements CityRepository {
 
     @Override
     @Transactional
-    public void toDelete(City city) {
-        city = byId(city.getId());
+    public void toDelete(Long id) {
+        City city = byId(id);
+
+        if (city == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(city);
     }
 }
