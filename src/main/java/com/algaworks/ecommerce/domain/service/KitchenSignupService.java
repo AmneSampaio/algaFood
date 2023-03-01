@@ -18,16 +18,16 @@ public class KitchenSignupService {
     private KitchenRepository kitchenRepository;
 
     public List<Kitchen> all() {
-        return kitchenRepository.all();
+        return kitchenRepository.findAll();
     }
 
     public Kitchen toSave(Kitchen kitchen) {
-        return kitchenRepository.toAdd(kitchen);
+        return kitchenRepository.save(kitchen);
     }
 
     public void toDelete(Long id) {
         try {
-            kitchenRepository.toDelete(id);
+            kitchenRepository.deleteById(id);
         } catch (EntityNotFoundException| EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(String.format("Not found kitchen related to the id %d.", id));
         } catch (DataIntegrityViolationException e) {

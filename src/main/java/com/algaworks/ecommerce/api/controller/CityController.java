@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cities")
@@ -27,11 +28,11 @@ public class CityController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<City> toSearch(@PathVariable Long id) {
-        City city = cityService.byId(id);
+    public ResponseEntity<Optional<City>> toSearch(@PathVariable Long id) {
+        Optional<City> cityDB = cityService.byId(id);
 
-        if (city != null) {
-            return ResponseEntity.ok(city);
+        if (cityDB.isPresent()) {
+            return ResponseEntity.ok(cityDB);
         }
 
         return ResponseEntity.notFound().build();
@@ -50,12 +51,12 @@ public class CityController {
     @PutMapping("/{id}")
     public ResponseEntity<?> toChange(@PathVariable Long id, @RequestBody City city) {
         Long stateId = city.getState().getId();
+        Optional<City> cityDB = cityService.byId(id);
 
         try {
-            City cityDB = cityService.byId(id);
-            if (cityDB != null) {
+            if (cityDB.isPresent()) {
                 BeanUtils.copyProperties(city, cityDB, "id");
-                city = cityService.toChange(cityDB);
+                city = cityService.toChange(cityDB.get());
                 return ResponseEntity.ok(city);
             }
             return ResponseEntity.notFound().build();

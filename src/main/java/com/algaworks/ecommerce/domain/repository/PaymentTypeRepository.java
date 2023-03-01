@@ -1,14 +1,10 @@
 package com.algaworks.ecommerce.domain.repository;
 
-import com.algaworks.ecommerce.domain.model.Kitchen;
 import com.algaworks.ecommerce.domain.model.PaymentType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface PaymentTypeRepository extends JpaRepository<PaymentType, Long> {
 
-public interface PaymentTypeRepository {
-
-    List<PaymentType> all();
-    PaymentType byId(Long id);
-    PaymentType toAdd(PaymentType paymentType);
-    void toDelete(PaymentType paymentType);
 }
