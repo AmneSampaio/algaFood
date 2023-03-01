@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CityService {
@@ -18,24 +19,24 @@ public class CityService {
     private CityRepository cityRepository;
 
     public List<City> all() {
-        return cityRepository.all();
+        return cityRepository.findAll();
     }
 
-    public City byId(Long id) {
-        return cityRepository.byId(id);
+    public Optional<City> byId(Long id) {
+        return cityRepository.findById(id);
     }
 
     public City toSave(City city) {
-        return cityRepository.toAdd(city);
+        return cityRepository.save(city);
     }
 
     public City toChange(City city) {
-        return cityRepository.toAdd(city);
+        return cityRepository.save(city);
     }
 
     public void toDelete(Long id) {
         try {
-            cityRepository.toDelete(id);
+            cityRepository.deleteById(id);
         } catch (EntityNotFoundException | EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(String.format("Not found city related to the id %d.", id));
         } catch (DataIntegrityViolationException e) {

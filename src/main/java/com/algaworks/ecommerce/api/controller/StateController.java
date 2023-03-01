@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/states")
@@ -25,11 +26,11 @@ public class StateController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<State> toSearch(@PathVariable Long id) {
-        State state = stateService.byId(id);
+    public ResponseEntity<Optional<State>> toSearch(@PathVariable Long id) {
+        Optional<State> stateDB = stateService.byId(id);
 
-        if (state != null) {
-            return ResponseEntity.ok(state);
+        if (stateDB.isPresent()) {
+            return ResponseEntity.ok(stateDB);
         }
 
         return ResponseEntity.notFound().build();
@@ -46,12 +47,12 @@ public class StateController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> toChange(@PathVariable Long id, @RequestBody State state) {
-        State stateDB = stateService.byId(id);
+    public ResponseEntity<?> toChange(@PathVariable Long id, @RequestBody Optional<State> state) {
+        Optional<State> stateDB = stateService.byId(id);
 
-        if (stateDB != null) {
+        if (stateDB.isPresent()) {
             BeanUtils.copyProperties(state, stateDB, "id");
-            state = stateService.toChange(stateDB);
+            state = Optional.ofNullable(stateService.toChange(stateDB.get()));
             return ResponseEntity.ok(state);
         }
 

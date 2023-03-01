@@ -1,13 +1,10 @@
 package com.algaworks.ecommerce.domain.repository;
 
 import com.algaworks.ecommerce.domain.model.Allowance;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface AllowanceRepository extends JpaRepository<Allowance, Long> {
 
-public interface AllowanceRepository {
-
-    List<Allowance> all();
-    Allowance byId(Long id);
-    Allowance toAdd(Allowance allowance);
-    void toDelete(Allowance allowance);
 }
