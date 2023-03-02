@@ -1,13 +1,10 @@
 package com.algaworks.ecommerce.domain.repository;
 
 import com.algaworks.ecommerce.domain.model.State;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface StateRepository extends JpaRepository<State, Long> {
 
-public interface StateRepository {
-
-    List<State> all();
-    State byId(Long id);
-    State toAdd(State state);
-    void toDelete(Long id);
 }

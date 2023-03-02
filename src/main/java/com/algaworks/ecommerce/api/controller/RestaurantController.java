@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("restaurants")
@@ -28,12 +29,12 @@ public class RestaurantController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> toSearch(@PathVariable Long id) {
-        Restaurant restaurant = restaurantSignupService.byId(id);
+        Optional<Restaurant> restaurant = Optional.ofNullable(restaurantSignupService.byId(id));
 
-        if (restaurant == null) {
+        if (restaurant.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(restaurant);
+        return ResponseEntity.ok(restaurant.get());
     }
 
     @PostMapping
@@ -53,12 +54,12 @@ public class RestaurantController {
     @PutMapping("/{id}")
     public ResponseEntity<?> toChange(@PathVariable Long id, @RequestBody Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
+        Optional<Restaurant> restaurantDB = Optional.ofNullable(restaurantSignupService.byId(id));
 
         try {
-            Restaurant restaurantDB = restaurantSignupService.byId(id);
-            if (restaurantDB != null) {
+            if (restaurantDB.isPresent()) {
                 BeanUtils.copyProperties(restaurant, restaurantDB,"id");
-                restaurant = restaurantSignupService.toChange(restaurantDB);
+                restaurant = restaurantSignupService.toChange(restaurantDB.get());
                 return ResponseEntity.ok(restaurant);
             }
             return ResponseEntity.notFound().build();
