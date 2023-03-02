@@ -21,6 +21,12 @@ public class KitchenSignupService {
         return kitchenRepository.findAll();
     }
 
+    public Kitchen toSearchByName(String name) {
+        return kitchenRepository.findByName(name);
+    }
+
+
+
     public Kitchen toSave(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
     }
