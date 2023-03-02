@@ -41,11 +41,6 @@ public class KitchenController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(kitchenSignupService.toSearchByName(name));
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<Kitchen> toSearchByName(@PathVariable String name) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(kitchenSignupService.toSearchByName(name));
-    }
-
     @PostMapping
     public ResponseEntity<Kitchen> toAdd(@RequestBody Kitchen kitchen) {
         return ResponseEntity.status(HttpStatus.CREATED).body(kitchenSignupService.toSave(kitchen));
