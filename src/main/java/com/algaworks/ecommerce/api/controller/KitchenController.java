@@ -35,7 +35,7 @@ public class KitchenController {
 
         return kitchen.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+    
     @GetMapping("/{name}")
     public ResponseEntity<Kitchen> toSearchByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(kitchenSignupService.toSearchByName(name));
